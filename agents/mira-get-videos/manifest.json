@@ -1,0 +1,23 @@
+{
+  "destination": "mira-templates/videos_header",
+  "videos": [
+    { "file": "1.mp4",  "drive_id": "PLACEHOLDER", "description": "Linhas de velocidade neon irradiando do centro, efeito hiperespaco" },
+    { "file": "2.mp4",  "drive_id": "PLACEHOLDER", "description": "Texto AI com tracos de circuito, neon verde, fundo de codigo" },
+    { "file": "3.mp4",  "drive_id": "PLACEHOLDER", "description": "Interface HUD circular holografica, brilho azul/roxo" },
+    { "file": "4.mp4",  "drive_id": "PLACEHOLDER", "description": "Icone de chip/processador AI com tracos de circuito, neon verde" },
+    { "file": "5.mp4",  "drive_id": "PLACEHOLDER", "description": "Nos de dados em rede com particulas azuis, perspectiva" },
+    { "file": "6.mp4",  "drive_id": "PLACEHOLDER", "description": "Nos de rede abstratos conectados por linhas brancas, fundo preto" },
+    { "file": "7.mp4",  "drive_id": "PLACEHOLDER", "description": "Globo digital com malha wireframe de rede, azul, fundo escuro" },
+    { "file": "8.mp4",  "drive_id": "PLACEHOLDER", "description": "Fluxos de dados verticais, trilhas de luz multicoloridas sobre preto" },
+    { "file": "9.mp4",  "drive_id": "PLACEHOLDER", "description": "Padrao de placa de circuito PCB, tracos brancos em cinza escuro" },
+    { "file": "10.mp4", "drive_id": "PLACEHOLDER", "description": "Estacao espacial sci-fi com anel brilhante tipo portal, cinematico" },
+    { "file": "11.mp4", "drive_id": "PLACEHOLDER", "description": "Cascata de codigo estilo Matrix, tom azul, profundidade em perspectiva" },
+    { "file": "12.mp4", "drive_id": "PLACEHOLDER", "description": "Chip processador AI centralizado, linhas cyan, fundo azul" },
+    { "file": "13.mp4", "drive_id": "PLACEHOLDER", "description": "Silhueta de pessoa observando parede de dados, humano + tech" },
+    { "file": "14.mp4", "drive_id": "PLACEHOLDER", "description": "Ondas de dados fluindo, monocromatico, particulas flutuando" },
+    { "file": "15.mp4", "drive_id": "PLACEHOLDER", "description": "Terreno fluido rosa/magenta com linhas neon synthwave, retro-futurista" },
+    { "file": "16.mp4", "drive_id": "PLACEHOLDER", "description": "Placa de circuito PCB em close-up, tracos azuis/cyan brilhantes" },
+    { "file": "17.mp4", "drive_id": "PLACEHOLDER", "description": "Rede de nos conectados em superficie ondulada, roxo/branco" },
+    { "file": "18.mp4", "drive_id": "PLACEHOLDER", "description": "Texto AI vermelho neon em estrutura mecanica/industrial, cyberpunk" }
+  ]
+}
