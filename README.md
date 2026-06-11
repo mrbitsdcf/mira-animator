@@ -68,6 +68,10 @@ A partir do deck 16:9, sem tocar no original:
 
 Cada um fixa os slides na proporção alvo (moldura fixa) e reduz os espaços laterais. Grave com a viewport ajustada à resolução do formato.
 
+E uma variante de **composição** (não muda a proporção):
+
+- `mira-thirds` cria `index-thirds.html`, regra dos terços: empurra o conteúdo do slide para as colunas 1+2 (dois terços da esquerda) e deixa a coluna da direita livre, para você sobrepor texto, lower-third ou o vídeo do apresentador na edição. Combina por cima do 16:9, do 1:1 ou do 9:16.
+
 ## Templates
 
 Três camadas em `templates/`:
