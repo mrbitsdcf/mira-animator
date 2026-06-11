@@ -10,21 +10,21 @@ Transforma um deck 16:9 do Mira numa versão **vertical generalista para a tela 
 
 **Dimensão (leia primeiro, é o erro mais comum).** O quadro vertical é **generalista para a tela atual**, não um tamanho fixo em pixels. A **altura é a altura cheia da tela** (`100vh`) e a **largura é a largura da tela dividida por 3** (`calc(100vw / 3)`). Numa tela 1080p isso dá 640x1080; numa tela maior ou menor, escala junto. O quadro vertical é a **coluna central** (um terço da largura) ocupando toda a altura, com sobra dos dois lados como margem. Por que não 1080x1920 fixo: além de não caber numa tela de 1080 de altura, prenderia o resultado a uma única resolução. (A regra largura/3 dá uma coluna um tiquinho mais larga que o 9:16 cravado. Se a plataforma exigir 9:16 exato, use `--fmt-w: calc(100vh * 9 / 16)`.)
 
-A abordagem **não é** moldura fixa que só encolhe: é **reformulação por slide**. Um `viewBox` 16:9 dentro de um quadro estreito e alto encaixa pela largura e ocupa só uma faixa fina, perdendo todo o impacto. Por isso aqui o palco vira **retrato** e a geometria de cada animação é **reescrita no JS da cópia** para subir e descer pela altura: o assunto da animação passa a ocupar cerca de 60 a 70% do quadro, centralizado.
+A abordagem **não é** moldura fixa que só encolhe: é **reformulação por slide**. Um `viewBox` 16:9 dentro de um quadro estreito e alto encaixa pela largura e ocupa só uma faixa fina, perdendo todo o impacto. Por isso aqui o palco vira **retrato** e a geometria de cada animação é **reescrita no JS da cópia** para subir e descer pela altura: o assunto da animação passa a ocupar de 80 a 90% da altura do palco, centralizado, com margens mínimas.
 
 ## RESULTADO OBRIGATÓRIO (é o ponto desta skill, leia)
 
-Estes 9:16 são para assistir no **smartphone**: a animação precisa ser **grande, vertical e preencher a altura**. Reflow profundo não é enfeite, é a razão da skill existir. Encolher a animação 16:9 para caber numa faixa fina é o ERRO clássico.
+Estes 9:16 são para assistir no **smartphone**: a animação precisa ser **maximizada**, ocupando quase todo o palco, na altura e na largura. Reflow profundo não é enfeite, é a razão da skill existir. Encolher a animação 16:9 para caber numa faixa fina é o ERRO clássico. Na dúvida entre menor e maior, escolha **maior**: margens mínimas (cerca de 8% por lado) e nada de área vazia.
 
 Três falhas estão **proibidas** (são exatamente o que sai errado num reflow raso):
 
 1. **Horizontal que continuou horizontal.** Se, na versão vertical, o eixo dominante ainda corre da esquerda para a direita (dois blocos lado a lado, partícula andando na horizontal, rede espalhada na largura), está ERRADO. **Toda animação horizontal DEVE ser refeita na vertical:** o que ia para o lado passa a ir de cima para baixo; o que estava lado a lado passa a ficar empilhado (um em cima, outro embaixo). Não existe "deixa horizontal e diminui".
 
-2. **Animação pequena com palco vazio.** Se sobrar faixa preta grande em cima e/ou embaixo da animação, está ERRADO. O assunto tem que ocupar **60 a 70% da ALTURA** do palco. Aumentar o `viewBox` não basta: **toda escala, raio, `range`, `domain` e espaçamento derivado das dimensões antigas tem que ser recalculado contra a altura nova.** Espalhe os elementos ao longo de quase toda a altura (ex.: `range([H*0.10, H*0.90])`) e cresça os tamanhos (raios, passos, distâncias) na mesma proporção.
+2. **Animação pequena com palco vazio.** Se sobrar faixa preta grande em cima e/ou embaixo da animação, está ERRADO. O assunto tem que ocupar **80 a 90% da ALTURA** do palco e usar bem a **largura** (elementos e rótulos espalhados até perto das bordas laterais, com margem pequena). Aumentar o `viewBox` não basta: **toda escala, raio, `range`, `domain` e espaçamento derivado das dimensões antigas tem que ser recalculado contra a altura nova.** Espalhe os elementos ao longo de quase toda a altura (ex.: `range([H*0.10, H*0.90])`) e cresça os tamanhos (raios, passos, distâncias) na mesma proporção.
 
 3. **Animação cortada ou sobreposta.** Se algum elemento sai pela borda (cortado no topo ou na base) ou os rótulos se encavalam, está ERRADO. Todo elemento fica dentro de `[margem, H - margem]` e os rótulos não colidem (em retrato, jogue o rótulo para o lado do nó, nunca embaixo do nó de baixo).
 
-Antes de entregar, olhe o resultado e responda: **a animação está grande, vertical, centralizada e inteira, ocupando a maior parte da altura?** Se a resposta for não, refaça. Esse é o critério de aprovação.
+Antes de entregar, olhe o resultado e responda: **a animação está maximizada, vertical, centralizada e inteira, ocupando 80 a 90% da altura e quase toda a largura útil do palco?** Se a resposta for não, refaça. Esse é o critério de aprovação.
 
 ## REGRA DE IDIOMA
 
@@ -55,6 +55,7 @@ A reformulação inteira gira em torno de uma regra simples e mecânica:
 3. **Gire o eixo E cresça a escala (as duas coisas, sempre).** Aqui mora o impacto, e é o passo que mais falha:
    - **Girar o eixo.** Identifique o eixo dominante (onde os elementos se espalham). Se é horizontal, vira vertical: o `range` que ia `[120, W-120]` no X passa a `[H*0.10, H*0.90]` no Y, com o X fixo em `cx`. Lado a lado vira empilhado.
    - **Crescer para preencher.** Recalcule TODA medida derivada das dimensões antigas contra o `H` novo (≈ 2,2× maior): raios, `stepH`, distâncias de força, comprimento de linha, raio orbital, fontes dos rótulos. Só trocar `H` de 540 para 1200 sem crescer as escalas deixa a animação minúscula no topo, com o resto do palco preto. Isso é falha.
+   - **Quando girar não basta, recomponha.** Girar o eixo é a ferramenta mais comum, não o objetivo: o objetivo é **aproveitar o espaço do palco**. Se depois do giro ainda sobrar área vazia (ou se empilhar tudo numa coluna ficar espremido e ilegível), reorganize a disposição dos elementos para o retrato: uma fileira de muitos itens vira grade de 2 colunas, satélites se redistribuem ao redor de um núcleo maior, o objeto principal cresce e os secundários se reacomodam. A composição pode mudar; o critério é o palco bem aproveitado.
 
 Sem o passo 3 completo (girar **e** crescer), os elementos ficam apertados numa faixa, com a metade de cima e de baixo do palco vazias. O passo 3 é o que faz a animação **preencher a vertical**.
 
@@ -63,7 +64,7 @@ Sem o passo 3 completo (girar **e** crescer), os elementos ficam apertados numa 
 Aplique conforme a metáfora do slide. O princípio geral está no fim, para metáforas fora desta lista.
 
 **Fluxo (partícula viajando entre nós).** Hoje é horizontal: `xs = scalePoint().range([120, W-120])`, partícula anima `cx`. Reflow para vertical:
-- `const ys = d3.scalePoint().domain(d3.range(ETAPAS.length)).range([160, H - 160]);` e `const cx = W / 2;` fixo.
+- `const ys = d3.scalePoint().domain(d3.range(ETAPAS.length)).range([H * 0.10, H * 0.90]);` e `const cx = W / 2;` fixo.
 - Linha vertical: `x1 = x2 = cx`, `y1 = ys(0)`, `y2 = ys(last)`.
 - Nós: `translate(${cx}, ${ys(i)})`.
 - Rótulo do nó: em vez de `dy: 92` (embaixo), jogue para o lado: `attr('dx', 70).attr('text-anchor', 'start')`, para o texto não colidir com o nó de baixo.
@@ -79,9 +80,9 @@ Aplique conforme a metáfora do slide. O princípio geral está no fim, para met
 
 **Comparação A vs B (dois cards lado a lado).** Isso é layout HTML, não SVG. Lado a lado num quadro estreito fica espremido. Reflow: empilhe A em cima e B embaixo. Troque o `grid md:grid-cols-2` por uma coluna só (remova o `md:grid-cols-2`, ou force `grid-template-columns: 1fr`), mantendo o realce alternado (spotlight) e, se houver partícula viajando de A para B, faça-a ir de cima para baixo.
 
-**Transformação A → B lado a lado (planta → obra, antes → depois, entrada → saída).** Dois objetos (SVG ou HTML) um ao lado do outro, com seta ou partícula de A para B. Em retrato, lado a lado fica minúsculo e sobra altura embaixo. Reflow: **empilhe A em cima e B embaixo**, cada um grande (cada metade usa quase toda a largura da coluna e cerca de 40% da altura), e a seta/partícula de transformação **desce** de A para B. Nunca deixe os dois lado a lado encolhidos no topo.
+**Transformação A → B lado a lado (planta → obra, antes → depois, entrada → saída).** Dois objetos (SVG ou HTML) um ao lado do outro, com seta ou partícula de A para B. Em retrato, lado a lado fica minúsculo e sobra altura embaixo. Reflow: **empilhe A em cima e B embaixo**, cada um grande (cada metade usa quase toda a largura da coluna e 40 a 45% da altura), e a seta/partícula de transformação **desce** de A para B. Nunca deixe os dois lado a lado encolhidos no topo.
 
-**Rede / grafo / nuvem de nós (force layout, "conhecimento acumulado", nós espalhados).** Costuma usar `d3.forceSimulation` com `forceCenter` e nós espalhados na largura. Em retrato, se o centro e as forças não mudam, os nós ficam amontoados, cortados no topo e sobrepostos. Reflow: **recentralize** com `forceCenter(W/2, H/2)` usando o `H` novo; **aumente o espalhamento** (mais `forceManyBody().strength` negativo e/ou maior `linkDistance`/raio do `forceRadial`) até a nuvem usar cerca de 70% da altura; **adicione/cresça `forceCollide`** com o raio dos nós para nada se sobrepor; e clampe as posições em `[margem, H - margem]` para nenhum nó vazar a borda. Na prática:
+**Rede / grafo / nuvem de nós (force layout, "conhecimento acumulado", nós espalhados).** Costuma usar `d3.forceSimulation` com `forceCenter` e nós espalhados na largura. Em retrato, se o centro e as forças não mudam, os nós ficam amontoados, cortados no topo e sobrepostos. Reflow: **recentralize** com `forceCenter(W/2, H/2)` usando o `H` novo; **aumente o espalhamento** (mais `forceManyBody().strength` negativo e/ou maior `linkDistance`/raio do `forceRadial`) até a nuvem usar 80 a 90% da altura e quase toda a largura útil; **adicione/cresça `forceCollide`** com o raio dos nós para nada se sobrepor; e clampe as posições em `[margem, H - margem]` para nenhum nó vazar a borda. Na prática:
 
 ```js
 const MARGEM = 90;
@@ -101,7 +102,9 @@ sim.force('center', d3.forceCenter(W / 2, H / 2))            // centro no H NOVO
 
 **Flip cards / battle arena (tipos B e C do mira-animator).** Em retrato, empilhe os cards numa coluna única e deixe a cascata de reveal correr de cima para baixo, em vez de da esquerda para a direita.
 
-**Princípio geral (metáfora fora da lista), OBRIGATÓRIO:** identifique o **eixo dominante** da animação, onde os elementos se espalham. Se for horizontal, **gire 90 graus** para vertical (sempre, não é opcional). Se for radial e achatado, inverta a compressão (de `ry` menor para `rx` menor). Em todos os casos, **cresça a escala** até o assunto ocupar 60 a 70% da **altura**, centralizado, com o loop interno preservado. Se ao terminar a animação não estiver grande e vertical, o reflow não foi feito: refaça.
+**Fileira de muitos itens (timeline, ícones em linha, 6+ etapas).** Girar para uma coluna única pode espremer os itens até ficarem ilegíveis. Nesse caso não é só virar: **recomponha em grade de 2 colunas** (ou em serpentina: desce por uma coluna, sobe pela outra), com itens grandes, ocupando 80 a 90% da altura e quase toda a largura útil. A ordem de leitura e a sequência da animação seguem a nova disposição.
+
+**Princípio geral (metáfora fora da lista), OBRIGATÓRIO:** identifique o **eixo dominante** da animação, onde os elementos se espalham. Se for horizontal, **gire 90 graus** para vertical (sempre, não é opcional). Se for radial e achatado, inverta a compressão (de `ry` menor para `rx` menor). Em todos os casos, **cresça a escala e recomponha o que for preciso** até o assunto ocupar 80 a 90% da **altura** e quase toda a largura útil, centralizado, com o loop interno preservado. A meta não é "girar", é **maximizar o aproveitamento do palco**: girar é o caminho mais comum para isso. Se ao terminar a animação não estiver maximizada e vertical, o reflow não foi feito: refaça.
 
 ## Passos
 
@@ -150,7 +153,7 @@ sim.force('center', d3.forceCenter(W / 2, H / 2))            // centro no H NOVO
 
 4. **Reescrever a geometria de cada animação.** Para cada bloco de animação no JS do `index-9x16.html`, aplique a virada de chave (viewBox retrato) e o reflow do eixo conforme o playbook. Preserve textos, cores, easing, durações, loop e `generation counter`. Se o slide usa o zoom `SZ` do `mira-size-animator`, mantenha a fórmula do `viewBox`, só com as dimensões retrato.
 5. **Reflow da composição do slide.** Garanta que o título fica no topo, o palco retrato grande no meio e as pílulas/legenda empilhadas embaixo, tudo dentro da **altura da tela** (`100vh`; a altura é apertada, título e pílulas precisam ser enxutos). Comparações lado a lado viram empilhadas (uma coluna).
-6. **Verificar o encaixe.** Confira mentalmente que, na coluna vertical (um terço da largura da tela, altura cheia): (a) título + palco + pílulas cabem sem cortar na altura; (b) a animação preenche cerca de 60 a 70% da altura, sem faixa enorme vazia em cima e embaixo; (c) o conteúdo cabe na largura estreita da coluna sem estourar lateralmente; (d) o eixo da animação está vertical (nada de partícula correndo numa faixa fina no meio); (e) o loop interno ainda roda. Se um slide estourar a altura, reduza o palco dele com `body > section:nth-of-type(N) .anim-stage { aspect-ratio: 1 / 1 !important; }` e ajuste o `H` do viewBox daquele slide para casar.
+6. **Verificar o encaixe.** Confira mentalmente que, na coluna vertical (um terço da largura da tela, altura cheia): (a) título + palco + pílulas cabem sem cortar na altura; (b) a animação preenche 80 a 90% da altura do palco e quase toda a largura útil, sem faixa vazia em cima e embaixo; (c) o conteúdo cabe na largura estreita da coluna sem estourar lateralmente; (d) o eixo da animação está vertical (nada de partícula correndo numa faixa fina no meio); (e) o loop interno ainda roda. Se um slide estourar a altura, reduza o palco dele com `body > section:nth-of-type(N) .anim-stage { aspect-ratio: 1 / 1 !important; }` e ajuste o `H` do viewBox daquele slide para casar.
 7. **Reportar.** Informe o caminho `index-9x16.html`, que o quadro é **generalista para a tela** (largura da tela / 3 por altura cheia; numa tela 1080p, 640x1080), o que foi reformulado em cada slide (em uma linha por slide: "fluxo agora vertical", "orbital em elipse alta", etc.) e como gravar: abra em tela cheia e recorte a **coluna central** (largura = um terço da largura da tela, altura cheia) na ferramenta de captura (OBS, device toolbar, Puppeteer). Para entregar numa largura específica, escale a coluna uniformemente.
 
 ## Observações honestas
@@ -165,7 +168,7 @@ sim.force('center', d3.forceCenter(W / 2, H / 2))            // centro no H NOVO
 
 **Os três que mais falham (cheque primeiro, são para tela de smartphone):**
 - [ ] Nenhuma animação ficou horizontal: todo eixo que corria na largura agora corre na altura; nada de blocos lado a lado encolhidos.
-- [ ] A animação ocupa 60 a 70% da ALTURA do palco, sem faixa preta grande em cima ou embaixo (escalas, raios e forças crescidos contra o H novo, não só o viewBox).
+- [ ] A animação está MAXIMIZADA: ocupa 80 a 90% da ALTURA do palco e quase toda a largura útil, sem faixa preta em cima ou embaixo (escalas, raios e forças crescidos contra o H novo, não só o viewBox).
 - [ ] Nada cortado nem sobreposto: todo elemento dentro de `[margem, H - margem]`, rótulos sem colisão.
 
 - [ ] `index.html` original intacto.
@@ -173,8 +176,8 @@ sim.force('center', d3.forceCenter(W / 2, H / 2))            // centro no H NOVO
 - [ ] Bloco `<style id="mira-formato-9x16">` injetado antes de `</head>`, com `.anim-stage { aspect-ratio: 4 / 5 }`.
 - [ ] Cada `body > section` com largura `calc(100vw / 3)` e altura `100vh` (generalista para a tela; numa tela 1080p, 640x1080), conteúdo centralizado via flex (não `margin:auto`).
 - [ ] viewBox de cada animação reescrito para retrato (altura aumentada, ex.: H de 540 para 1200).
-- [ ] Eixo de espalhamento de cada animação reformulado (horizontal virou vertical; elipse larga virou alta; comparação lado a lado virou empilhada).
-- [ ] Animação preenche cerca de 60 a 70% da altura, centralizada, sem faixa enorme vazia.
+- [ ] Eixo de espalhamento de cada animação reformulado (horizontal virou vertical; elipse larga virou alta; comparação lado a lado virou empilhada; fileira longa virou grade, se coluna única espremia).
+- [ ] Animação preenche 80 a 90% da altura, centralizada, sem faixa vazia.
 - [ ] Textos, cores, easing, durações, loop interno e generation counter preservados.
 - [ ] Zoom `SZ` do mira-size-animator preservado nos slides que o usam.
 - [ ] Navegação funcionando; nenhum slide corta conteúdo na coluna vertical (1/3 da largura da tela, altura cheia).
