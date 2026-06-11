@@ -1,6 +1,6 @@
 ---
 name: mira-thirds
-description: Reenquadra um deck do Mira na REGRA DOS TERÇOS (rule of thirds), sem mudar a proporção do quadro. Empurra o conteúdo de cada slide (título, animação e pílulas) para as colunas 1 e 2 de um grid 3x3 (os dois terços da esquerda) e deixa a coluna da direita inteira livre, reservada para você sobrepor texto, lower-third ou o vídeo do apresentador na edição. Não toca no arquivo original: cria um novo arquivo com sufixo -thirds ao lado. Funciona por cima do deck 16:9, da versão 1:1 (mira-squared) ou da versão 9:16 (mira-vertical). O lado livre é a direita por padrão, com opção de inverter para a esquerda. Use SEMPRE que o usuário disser "/mira-thirds", "regra dos terços", "rule of thirds", "composição em terços", "anima à esquerda", "animação na esquerda", "deixa a direita livre", "coluna livre", "dois terços à esquerda", "2/3 à esquerda", "grid 3x3", "espaço para texto ao lado", "abre espaço à direita", ou pedir o deck com a animação encostada num lado e o outro terço livre.
+description: Reenquadra um deck do Mira na REGRA DOS TERÇOS (rule of thirds), sem mudar a proporção do quadro. Empurra o conteúdo de cada slide (título, animação e pílulas) para as colunas 1 e 2 de um grid 3x3 (os dois terços da esquerda) e deixa a coluna da direita inteira livre, reservada para você sobrepor texto, lower-third ou o vídeo do apresentador na edição. Não toca no arquivo original: cria um novo arquivo com sufixo -thirds ao lado. Funciona por cima do deck 16:9, da versão 1:1 (mira-squared) ou da versão 9:16 (mira-vertical), OU cria slides DO ZERO já compostos em terços quando não há deck de origem. O lado livre é a direita por padrão, com opção de inverter para a esquerda. Use SEMPRE que o usuário disser "/mira-thirds", "regra dos terços", "rule of thirds", "composição em terços", "anima à esquerda", "animação na esquerda", "deixa a direita livre", "coluna livre", "dois terços à esquerda", "2/3 à esquerda", "grid 3x3", "espaço para texto ao lado", "abre espaço à direita", "cria um slide em terços", ou pedir o deck ou um slide novo com a animação encostada num lado e o outro terço livre.
 ---
 
 # Skill: Reenquadramento na Regra dos Terços (animação em 2/3, um terço livre)
@@ -19,11 +19,22 @@ Reenquadra um deck do Mira na **regra dos terços** (rule of thirds): divide o q
    conteúdo nas colunas 1+2      direita livre
 ```
 
+Tem dois modos: **conversão** (padrão quando existe deck de origem, passos abaixo) e **criação nativa** (quando não existe deck, ou o usuário pede um slide novo já em terços; seção a seguir).
+
+## Criação do zero na geometria nativa
+
+Quando não houver deck de origem, ou o usuário pedir "cria um slide em terços sobre X", NÃO crie um slide centralizado para reenquadrar depois. O slide nasce composto em terços:
+
+1. **Herde as regras criativas do `agents/mira-animator/SKILL.md`:** Regra Zero (loop interno obrigatório), liberdade criativa de metáfora, regra de idioma, regra de título (sem ícone, máximo 6 palavras), estrutura do card com glass-card. Tudo vale igual.
+2. **Composição nativa:** o arquivo nasce com o bloco `<style id="mira-formato-thirds">` desta skill no head e o conteúdo já autorado para viver nas colunas 1+2, com a coluna 3 livre. Proporção base: 16:9, salvo pedido de outro formato (aí combine com a moldura do mira-squared ou mira-vertical).
+3. **Vantagem da autoria nativa (use):** diferente do reenquadramento, aqui você PODE compor a animação com o assunto principal sobre a linha de força entre a COL 2 e a COL 3, que é o ponto forte da regra dos terços. No reenquadramento isso é impossível sem mexer na animação; na criação nativa é a composição certa.
+4. **A coluna livre continua sagrada:** nada de título, pílula ou elemento da animação invadindo o terço reservado, que segue limpo para sobreposição na edição.
+
 ## REGRA DE IDIOMA
 
 Siga `agents/_shared/idioma.md`. Texto visível em português correto. Proibido travessão (—): use vírgula ou dois-pontos.
 
-## Regra de Ouro: nunca destrua o original
+## Regra de Ouro: nunca destrua o original (modo conversão)
 
 - O deck de origem (`index.html`, `index-1x1.html` ou `index-9x16.html`) **permanece intacto**.
 - Você cria um **arquivo novo** ao lado, com sufixo `-thirds`.

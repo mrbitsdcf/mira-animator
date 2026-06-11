@@ -1,12 +1,25 @@
 ---
 name: mira-vertical
-description: Gera uma versão VERTICAL (9:16, generalista para a tela atual: largura da tela dividida por 3 por altura cheia, ex. 640x1080 numa tela 1080p) de um deck do Mira, a partir do deck 16:9 original, para vídeo vertical (Reels, Shorts, TikTok, Stories). Não toca no arquivo original: cria um novo arquivo index-9x16.html ao lado. Em vez de só encolher a animação para caber, REFORMULA a geometria de cada slide para o retrato: deixa o palco alto, reescreve o viewBox do SVG para vertical e reposiciona os elementos da animação (fluxo horizontal vira topo para base, elipse larga vira alta, comparação lado a lado vira empilhada) para aproveitar toda a altura do quadro. Texto, cores, timings e loop ficam intactos, só posição e eixo mudam. Use SEMPRE que o usuário disser "/mira-vertical", "versão vertical", "deixa vertical", "formato 9:16", "1080x1920", "apresentação vertical", "para Reels", "para Shorts", "para Stories", "para TikTok", "vídeo vertical", "modo retrato", ou pedir o deck num formato vertical.
+description: Gera uma versão VERTICAL (9:16, generalista para a tela atual: largura da tela dividida por 3 por altura cheia, ex. 640x1080 numa tela 1080p) de um deck do Mira, a partir do deck 16:9 original, OU cria slides verticais DO ZERO na geometria nativa quando não há deck de origem, para vídeo vertical (Reels, Shorts, TikTok, Stories). Na conversão, não toca no arquivo original: cria um novo arquivo index-9x16.html ao lado. Em vez de só encolher a animação para caber, REFORMULA a geometria de cada slide para o retrato: deixa o palco alto, reescreve o viewBox do SVG para vertical e reposiciona os elementos da animação (fluxo horizontal vira topo para base, elipse larga vira alta, comparação lado a lado vira empilhada) para aproveitar toda a altura do quadro. Texto, cores, timings e loop ficam intactos, só posição e eixo mudam. Use SEMPRE que o usuário disser "/mira-vertical", "versão vertical", "deixa vertical", "formato 9:16", "1080x1920", "apresentação vertical", "para Reels", "para Shorts", "para Stories", "para TikTok", "vídeo vertical", "modo retrato", "cria um slide vertical", "novo slide 9:16", "slide vertical do zero", ou pedir o deck ou um slide novo num formato vertical.
 
 ---
 
 # Skill: Versão Vertical do Deck (9:16, coluna de 1/3 da largura da tela) com reflow da animação
 
-Transforma um deck 16:9 do Mira numa versão **vertical generalista para a tela atual**, para gravar como vídeo vertical.
+Transforma um deck 16:9 do Mira numa versão **vertical generalista para a tela atual**, para gravar como vídeo vertical. Tem dois modos:
+
+- **Modo conversão (padrão quando existe deck 16:9):** reformula um deck existente, slide a slide, conforme o playbook abaixo.
+- **Modo criação nativa (quando NÃO existe deck de origem, ou o usuário pede um slide novo já vertical):** cria o slide do zero direto na geometria retrato, sem passar pelo 16:9. Veja a seção "Criação do zero na geometria nativa".
+
+## Criação do zero na geometria nativa
+
+Quando não houver deck 16:9 de origem, ou o usuário pedir "cria um slide vertical sobre X", NÃO crie um 16:9 intermediário para converter depois. A animação nasce pensada para o retrato:
+
+1. **Herde as regras criativas do `agents/mira-animator/SKILL.md`:** Regra Zero (loop interno obrigatório), liberdade criativa de metáfora, regra de idioma, regra de título (sem ícone, máximo 6 palavras), estrutura do card com glass-card. Tudo vale igual.
+2. **Geometria nativa desde a concepção:** o arquivo já nasce como `index-9x16.html` (na pasta do deck novo), com o bloco `<style id="mira-formato-9x16">` desta skill no head, palco 4:5 e `viewBox` retrato (`W = 960, H = 1200`).
+3. **Metáfora escolhida JÁ para o vertical:** o eixo dominante nasce na altura (fluxo desce, comparação empilha, rede espalha na vertical, escada sobe íngreme). Não componha mentalmente em 16:9 para depois girar; o playbook de reflow vira aqui um playbook de composição.
+4. **Mesmos critérios de aprovação do modo conversão:** assunto ocupando 80 a 90% da altura do palco, largura útil bem usada, nada cortado, REGRA DE FONTE MÍNIMA respeitada (SVG >= 24 no viewBox H=1200).
+5. Se o deck vertical (`index-9x16.html`) já existir, o slide novo é adicionado nele, no padrão dos demais.
 
 **Dimensão (leia primeiro, é o erro mais comum).** O quadro vertical é **generalista para a tela atual**, não um tamanho fixo em pixels. A **altura é a altura cheia da tela** (`100vh`) e a **largura é a largura da tela dividida por 3** (`calc(100vw / 3)`). Numa tela 1080p isso dá 640x1080; numa tela maior ou menor, escala junto. O quadro vertical é a **coluna central** (um terço da largura) ocupando toda a altura, com sobra dos dois lados como margem. Por que não 1080x1920 fixo: além de não caber numa tela de 1080 de altura, prenderia o resultado a uma única resolução. (A regra largura/3 dá uma coluna um tiquinho mais larga que o 9:16 cravado. Se a plataforma exigir 9:16 exato, use `--fmt-w: calc(100vh * 9 / 16)`.)
 

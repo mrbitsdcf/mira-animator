@@ -1,12 +1,24 @@
 ---
 name: mira-squared
-description: Gera uma versão QUADRADA (1:1, 1080x1080) de um deck do Mira, a partir do deck 16:9 original, para vídeo em formato quadrado (feed do Instagram, LinkedIn, etc.). Não toca no arquivo original: cria um novo arquivo index-1x1.html ao lado, fixando cada slide em 1080x1080 e reduzindo os espaços laterais, com moldura fixa e ajuste leve. O slide fica centralizado por padrão, com opção de alinhar à esquerda ou à direita. Use SEMPRE que o usuário disser "/mira-squared", "versão quadrada", "deixa quadrado", "formato 1:1", "1080x1080", "apresentação quadrada", "corta os lados", "reduz os espaços laterais", "vídeo quadrado", ou pedir o deck num formato quadrado para outra rede.
+description: Gera uma versão QUADRADA (1:1, 1080x1080) de um deck do Mira, a partir do deck 16:9 original, OU cria slides quadrados DO ZERO na geometria nativa quando não há deck de origem, para vídeo em formato quadrado (feed do Instagram, LinkedIn, etc.). Na conversão, não toca no arquivo original: cria um novo arquivo index-1x1.html ao lado, fixando cada slide em 1080x1080 e reduzindo os espaços laterais, com moldura fixa e ajuste leve. O slide fica centralizado por padrão, com opção de alinhar à esquerda ou à direita. Use SEMPRE que o usuário disser "/mira-squared", "versão quadrada", "deixa quadrado", "formato 1:1", "1080x1080", "apresentação quadrada", "corta os lados", "reduz os espaços laterais", "vídeo quadrado", "cria um slide quadrado", "novo slide 1:1", ou pedir o deck ou um slide novo num formato quadrado.
 
 ---
 
 # Skill: Versão Quadrada do Deck (1:1, 1080x1080)
 
-Transforma um deck 16:9 do Mira numa versão **quadrada de 1080x1080**, reduzindo os espaços laterais de todos os slides. Útil para gravar a apresentação como vídeo quadrado. A abordagem é **moldura fixa com ajuste leve**: o conteúdo já é centralizado, então o quadrado corta a sobra lateral e encaixa o bloco central.
+Transforma um deck 16:9 do Mira numa versão **quadrada de 1080x1080**, reduzindo os espaços laterais de todos os slides. Útil para gravar a apresentação como vídeo quadrado. A abordagem é **moldura fixa com ajuste leve**: o conteúdo já é centralizado, então o quadrado corta a sobra lateral e encaixa o bloco central. Tem dois modos:
+
+- **Modo conversão (padrão quando existe deck 16:9):** os passos abaixo.
+- **Modo criação nativa (quando NÃO existe deck de origem, ou o usuário pede um slide novo já quadrado):** veja a seção "Criação do zero na geometria nativa".
+
+## Criação do zero na geometria nativa
+
+Quando não houver deck 16:9 de origem, ou o usuário pedir "cria um slide quadrado sobre X", NÃO crie um 16:9 intermediário para converter depois. A animação nasce pensada para o quadrado:
+
+1. **Herde as regras criativas do `agents/mira-animator/SKILL.md`:** Regra Zero (loop interno obrigatório), liberdade criativa de metáfora, regra de idioma, regra de título (sem ícone, máximo 6 palavras), estrutura do card com glass-card. Tudo vale igual.
+2. **Geometria nativa desde a concepção:** o arquivo já nasce como `index-1x1.html`, com o bloco `<style id="mira-formato-1x1">` desta skill no head. A animação usa `viewBox` quadrado (ex.: `W = 960, H = 960`) casando com um palco quadrado ou quase quadrado, sem letterbox, em vez do 16:9 que sobra faixa.
+3. **Composição pensada para o 1:1:** metáforas radiais e centradas (orbital, hub-and-spoke, pulso central, grade 2x2) rendem mais no quadrado que fileiras largas. O assunto ocupa a maior parte do palco, centralizado.
+4. Se o deck quadrado (`index-1x1.html`) já existir, o slide novo é adicionado nele, no padrão dos demais.
 
 ## REGRA DE IDIOMA
 
