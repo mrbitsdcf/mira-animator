@@ -12,6 +12,20 @@ Transforma um deck 16:9 do Mira numa versão **vertical generalista para a tela 
 
 A abordagem **não é** moldura fixa que só encolhe: é **reformulação por slide**. Um `viewBox` 16:9 dentro de um quadro estreito e alto encaixa pela largura e ocupa só uma faixa fina, perdendo todo o impacto. Por isso aqui o palco vira **retrato** e a geometria de cada animação é **reescrita no JS da cópia** para subir e descer pela altura: o assunto da animação passa a ocupar cerca de 60 a 70% do quadro, centralizado.
 
+## RESULTADO OBRIGATÓRIO (é o ponto desta skill, leia)
+
+Estes 9:16 são para assistir no **smartphone**: a animação precisa ser **grande, vertical e preencher a altura**. Reflow profundo não é enfeite, é a razão da skill existir. Encolher a animação 16:9 para caber numa faixa fina é o ERRO clássico.
+
+Três falhas estão **proibidas** (são exatamente o que sai errado num reflow raso):
+
+1. **Horizontal que continuou horizontal.** Se, na versão vertical, o eixo dominante ainda corre da esquerda para a direita (dois blocos lado a lado, partícula andando na horizontal, rede espalhada na largura), está ERRADO. **Toda animação horizontal DEVE ser refeita na vertical:** o que ia para o lado passa a ir de cima para baixo; o que estava lado a lado passa a ficar empilhado (um em cima, outro embaixo). Não existe "deixa horizontal e diminui".
+
+2. **Animação pequena com palco vazio.** Se sobrar faixa preta grande em cima e/ou embaixo da animação, está ERRADO. O assunto tem que ocupar **60 a 70% da ALTURA** do palco. Aumentar o `viewBox` não basta: **toda escala, raio, `range`, `domain` e espaçamento derivado das dimensões antigas tem que ser recalculado contra a altura nova.** Espalhe os elementos ao longo de quase toda a altura (ex.: `range([H*0.10, H*0.90])`) e cresça os tamanhos (raios, passos, distâncias) na mesma proporção.
+
+3. **Animação cortada ou sobreposta.** Se algum elemento sai pela borda (cortado no topo ou na base) ou os rótulos se encavalam, está ERRADO. Todo elemento fica dentro de `[margem, H - margem]` e os rótulos não colidem (em retrato, jogue o rótulo para o lado do nó, nunca embaixo do nó de baixo).
+
+Antes de entregar, olhe o resultado e responda: **a animação está grande, vertical, centralizada e inteira, ocupando a maior parte da altura?** Se a resposta for não, refaça. Esse é o critério de aprovação.
+
 ## REGRA DE IDIOMA
 
 Siga `agents/_shared/idioma.md`. Texto visível em português correto. Proibido travessão (—): use vírgula ou dois-pontos.
@@ -37,10 +51,12 @@ Siga `agents/_shared/idioma.md`. Texto visível em português correto. Proibido 
 A reformulação inteira gira em torno de uma regra simples e mecânica:
 
 1. **Palco retrato.** No bloco de estilo injetado, troque o `.anim-stage` de 16:9 para retrato. Como a altura do quadro é a da tela e o título e as pílulas também comem altura, o padrão é `aspect-ratio: 4 / 5`. Numa tela 1080p o card fica com cerca de 580px de largura e o palco com cerca de 725px de altura (cerca de 67% da altura), deixando espaço para título e pílulas; em outras telas, escala junto. Sem letterbox.
-2. **viewBox retrato casando com o palco.** No JS de cada animação, deixe o `viewBox` na mesma proporção do palco (4:5). Na prática, **aumente a altura**: de `W = 960, H = 540` para `W = 960, H = 1200` (proporção 4:5). Como `cx = W/2` e `cy = H/2` derivam de `W` e `H`, o centro se reposiciona sozinho. Esses são valores do `viewBox` (unidades do SVG), independentes da resolução da tela: o SVG escala para preencher o palco em qualquer tamanho.
-3. **Reposicione só o eixo de espalhamento.** O que você ajusta à mão é onde os elementos se espalham: o eixo dominante da animação. Se ele é horizontal, gire para vertical. Se é radial e achatado, troque a compressão de eixo e cresça a escala até preencher a altura nova.
+2. **viewBox retrato casando com o palco.** No JS de cada animação, deixe o `viewBox` na mesma proporção do palco (4:5). Na prática, **aumente a altura**: de `W = 960, H = 540` para `W = 960, H = 1200` (proporção 4:5). Como `cx = W/2` e `cy = H/2` derivam de `W` e `H`, o centro se reposiciona sozinho. Esses são valores do `viewBox` (unidades do SVG), independentes da resolução da tela.
+3. **Gire o eixo E cresça a escala (as duas coisas, sempre).** Aqui mora o impacto, e é o passo que mais falha:
+   - **Girar o eixo.** Identifique o eixo dominante (onde os elementos se espalham). Se é horizontal, vira vertical: o `range` que ia `[120, W-120]` no X passa a `[H*0.10, H*0.90]` no Y, com o X fixo em `cx`. Lado a lado vira empilhado.
+   - **Crescer para preencher.** Recalcule TODA medida derivada das dimensões antigas contra o `H` novo (≈ 2,2× maior): raios, `stepH`, distâncias de força, comprimento de linha, raio orbital, fontes dos rótulos. Só trocar `H` de 540 para 1200 sem crescer as escalas deixa a animação minúscula no topo, com o resto do palco preto. Isso é falha.
 
-Sem o passo 3, os elementos ficariam empilhados no meio com a metade de cima e de baixo do palco vazias. O passo 3 é o que faz a animação **respirar na vertical**.
+Sem o passo 3 completo (girar **e** crescer), os elementos ficam apertados numa faixa, com a metade de cima e de baixo do palco vazias. O passo 3 é o que faz a animação **preencher a vertical**.
 
 ## Playbook de reflow por metáfora
 
@@ -63,11 +79,29 @@ Aplique conforme a metáfora do slide. O princípio geral está no fim, para met
 
 **Comparação A vs B (dois cards lado a lado).** Isso é layout HTML, não SVG. Lado a lado num quadro estreito fica espremido. Reflow: empilhe A em cima e B embaixo. Troque o `grid md:grid-cols-2` por uma coluna só (remova o `md:grid-cols-2`, ou force `grid-template-columns: 1fr`), mantendo o realce alternado (spotlight) e, se houver partícula viajando de A para B, faça-a ir de cima para baixo.
 
+**Transformação A → B lado a lado (planta → obra, antes → depois, entrada → saída).** Dois objetos (SVG ou HTML) um ao lado do outro, com seta ou partícula de A para B. Em retrato, lado a lado fica minúsculo e sobra altura embaixo. Reflow: **empilhe A em cima e B embaixo**, cada um grande (cada metade usa quase toda a largura da coluna e cerca de 40% da altura), e a seta/partícula de transformação **desce** de A para B. Nunca deixe os dois lado a lado encolhidos no topo.
+
+**Rede / grafo / nuvem de nós (force layout, "conhecimento acumulado", nós espalhados).** Costuma usar `d3.forceSimulation` com `forceCenter` e nós espalhados na largura. Em retrato, se o centro e as forças não mudam, os nós ficam amontoados, cortados no topo e sobrepostos. Reflow: **recentralize** com `forceCenter(W/2, H/2)` usando o `H` novo; **aumente o espalhamento** (mais `forceManyBody().strength` negativo e/ou maior `linkDistance`/raio do `forceRadial`) até a nuvem usar cerca de 70% da altura; **adicione/cresça `forceCollide`** com o raio dos nós para nada se sobrepor; e clampe as posições em `[margem, H - margem]` para nenhum nó vazar a borda. Na prática:
+
+```js
+const MARGEM = 90;
+sim.force('center', d3.forceCenter(W / 2, H / 2))            // centro no H NOVO (1200), não no antigo
+   .force('charge', d3.forceManyBody().strength(-340))       // mais repulsão que no 16:9, para espalhar na altura
+   .force('collide', d3.forceCollide(d => d.r + 8))          // nada sobreposto
+   .on('tick', () => {
+     nodes.forEach(n => {                                    // nenhum nó vaza a borda
+       n.x = Math.max(MARGEM, Math.min(W - MARGEM, n.x));
+       n.y = Math.max(MARGEM, Math.min(H - MARGEM, n.y));
+     });
+     /* ...atualização de posições existente... */
+   });
+```
+
 **Capa (partículas no fundo, tela cheia).** Costuma usar `W = innerWidth, H = innerHeight`: já preenche o retrato sozinho. Não precisa de reflow, no máximo confira que cobre o quadro.
 
 **Flip cards / battle arena (tipos B e C do mira-animator).** Em retrato, empilhe os cards numa coluna única e deixe a cascata de reveal correr de cima para baixo, em vez de da esquerda para a direita.
 
-**Princípio geral (metáfora fora da lista):** identifique o **eixo dominante** da animação, onde os elementos se espalham. Se for horizontal, gire 90 graus para vertical. Se for radial e achatado, inverta a compressão (de `ry` menor para `rx` menor) e cresça a escala. Meta única: o assunto ocupa cerca de 60 a 70% da altura, centralizado, com o loop interno preservado.
+**Princípio geral (metáfora fora da lista), OBRIGATÓRIO:** identifique o **eixo dominante** da animação, onde os elementos se espalham. Se for horizontal, **gire 90 graus** para vertical (sempre, não é opcional). Se for radial e achatado, inverta a compressão (de `ry` menor para `rx` menor). Em todos os casos, **cresça a escala** até o assunto ocupar 60 a 70% da **altura**, centralizado, com o loop interno preservado. Se ao terminar a animação não estiver grande e vertical, o reflow não foi feito: refaça.
 
 ## Passos
 
@@ -108,6 +142,8 @@ Aplique conforme a metáfora do slide. O princípio geral está no fim, para met
      O viewBox do SVG é reescrito no JS para casar com esta proporção. */
   .anim-stage {
     aspect-ratio: 4 / 5 !important;
+    height: auto !important;   /* anula height fixo por slide (clamp) para a proporção 4:5 mandar no tamanho do palco */
+    width: 100% !important;
   }
 </style>
 ```
@@ -126,6 +162,11 @@ Aplique conforme a metáfora do slide. O princípio geral está no fim, para met
 - Esta skill mexe na **proporção e na geometria**. Se o usuário quiser só o reenquadramento de composição (regra dos terços) por cima do vertical, isso é o `mira-thirds`, aplicado sobre o `index-9x16.html`.
 
 ## Checklist
+
+**Os três que mais falham (cheque primeiro, são para tela de smartphone):**
+- [ ] Nenhuma animação ficou horizontal: todo eixo que corria na largura agora corre na altura; nada de blocos lado a lado encolhidos.
+- [ ] A animação ocupa 60 a 70% da ALTURA do palco, sem faixa preta grande em cima ou embaixo (escalas, raios e forças crescidos contra o H novo, não só o viewBox).
+- [ ] Nada cortado nem sobreposto: todo elemento dentro de `[margem, H - margem]`, rótulos sem colisão.
 
 - [ ] `index.html` original intacto.
 - [ ] `index-9x16.html` criado na mesma pasta do deck.
