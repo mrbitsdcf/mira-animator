@@ -50,6 +50,7 @@ mira-copywriter   refinamento de texto e imagens
 mira-builder      montagem do HTML (glass-cards)
 mira-animator     animações D3 com loop interno (inclui diretrizes D3 em references/)
 mira-size-animator ajusta a percepção de tamanho das animações numa escala de 1 a 10 (base 3/10)
+mira-animated-metaphor transforma a animação de um slide na metáfora visual do conceito
 mira-visuals      imagens estáticas: painéis, diagramas, gráficos e infográficos
 mira-validator    relatório de conformidade final
 ```
