@@ -59,7 +59,7 @@ mira-visuals      imagens estáticas: painéis, diagramas, gráficos e infográf
 mira-validator    relatório de conformidade final
 ```
 
-Apoio: `mira-image-prompt` (prompts JSON para foto realista) e `mira-img-animator` (anima imagens existentes). Regra de idioma compartilhada em `agents/_shared/idioma.md`.
+Apoio: `mira-image-prompt` (prompts JSON para foto realista), `mira-img-animator` (anima imagens existentes) e `mira-chart` (gráficos de dados a partir de CSV/JSON ou de imagens e rascunhos à mão, com recomendação do melhor tipo). Regra de idioma compartilhada em `agents/_shared/idioma.md`.
 
 O `mira-size-animator` lê o marcador `<!-- @MIRA:SIZE N/10 -->` que o `mira-animator` estampa em cada animação (sempre 3/10 ao gerar) e escala a composição dentro do SVG para preencher mais ou menos o palco, sem alterar a altura do palco nem o loop interno. "Coloca as animações em 6/10" sobe o nível; "esse slide em 2/10" desce.
 
