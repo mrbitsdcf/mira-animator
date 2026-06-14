@@ -95,7 +95,7 @@ mira-visuals          static images: panels, diagrams, charts and infographics
 mira-validator        final conformance report
 ```
 
-Support skills: `mira-img-animator` (animates existing images) and `mira-chart` (data charts from CSV/JSON, images or hand sketches, with a best-type recommendation). Entry and helpers: `mira-new`, `mira-references`, `mira-get-videos`.
+Support skills: `mira-img-animator` (animates existing images), `mira-chart` (data charts from CSV/JSON, images or hand sketches, with a best-type recommendation) and `mira-image-template` (builds a new deck template from screenshots and/or a logo, recognizing the design system and layout, then registers it for `mira-new`). Entry and helpers: `mira-new`, `mira-references`, `mira-get-videos`.
 
 On-slide elements: `mira-3d` (a true 3D element, auto-rotating and draggable, choosing CSS 3D, procedural Three.js or a glTF `.glb`; a `.glb` slide needs a local server, so the agent starts one and writes a double-click launcher), `mira-qrcode` (a scannable QR code from a link or text, generated locally as inline SVG, works from `file://`) and `mira-image` (places an image you already have into a slide, copied into `assets/` and referenced by a relative path, image static with the loop on the frame, works from `file://`).
 

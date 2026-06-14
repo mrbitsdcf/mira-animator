@@ -53,6 +53,9 @@ Static images for slides: panels, diagrams, charts and infographics — when a c
 ### `/mira-chart`
 Turns data into charts with impact: from a CSV/JSON, from an image of a chart, or from a hand-drawn sketch — and recommends the best chart type from a gallery.
 
+### `/mira-image-template`
+Creates a **new deck template from image(s)**. You send screenshots of screens/slides and/or the logo, and the agent recognizes the whole design system (colors, background, typography, corners, shadows, glassmorphism, glows) and, when a screenshot is given, the **arrangement of the elements**, then builds a complete template: the skeleton `mira-templates/decks/<name>/index.html` with the identity embedded, plus the theme `mira-templates/themes/<name>.css`. At the end it asks for a **name** and saves. The template is then offered by `/mira-new` alongside the existing ones, and its same-name theme becomes the natural default. The screenshot drives the layout; the logo drives the palette.
+
 ### `/mira-qrcode`
 Inserts a large, centered, scannable **QR code** into a slide, generated from a link or text you provide. The QR is generated **locally** at build time (the `qrcode` npm package) and embedded as an inline SVG, with no runtime dependency, no external API and no CDN, so the slide works even from `file://`. Clean card, same pattern as `mira-3d`: just the slide title and the big QR, with no link caption underneath. Scannability drives the style: dark modules on a white card, quiet zone preserved, orange only on the frame and title. The QR stays static: the internal loop lives in the frame (glow pulse, breathing corners), never over the modules.
 

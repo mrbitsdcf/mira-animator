@@ -37,8 +37,10 @@ Estes rodam por cima de um deck existente.
 
 | Agente | O que faz |
 |---|---|
-| **mira-visuals** | Imagens estáticas para slides: painéis, diagramas, gráficos e infográficos. || **mira-img-animator** | Anima uma imagem existente. |
+| **mira-visuals** | Imagens estáticas para slides: painéis, diagramas, gráficos e infográficos. |
+| **mira-img-animator** | Anima uma imagem existente. |
 | **mira-chart** | Transforma dados em gráficos — a partir de CSV/JSON, de uma imagem, ou de um rascunho à mão — e recomenda o melhor tipo de gráfico. |
+| **mira-image-template** | Cria um novo template de deck a partir de imagem(ns) — prints de telas e/ou logomarca — reconhecendo o design system e a disposição dos elementos, e registra para o `mira-new` usar. |
 
 ## Agentes de elementos no slide
 

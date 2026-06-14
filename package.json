@@ -37,6 +37,7 @@
     "agents/mira-extract",
     "agents/mira-get-videos",
     "agents/mira-image-prompt",
+    "agents/mira-image-template",
     "agents/mira-img-animator",
     "agents/mira-planner",
     "agents/mira-references",

@@ -37,8 +37,10 @@ These run on top of an existing deck.
 
 | Agent | What it does |
 |---|---|
-| **mira-visuals** | Static images for slides: panels, diagrams, charts and infographics. || **mira-img-animator** | Animates an existing image. |
+| **mira-visuals** | Static images for slides: panels, diagrams, charts and infographics. |
+| **mira-img-animator** | Animates an existing image. |
 | **mira-chart** | Turns data into charts — from CSV/JSON, from an image, or from a hand-drawn sketch — and recommends the best chart type. |
+| **mira-image-template** | Builds a new deck template from image(s) — screenshots and/or a logo — recognizing the design system and the element layout, and registers it for `mira-new` to use. |
 
 ## On-slide element agents
 
