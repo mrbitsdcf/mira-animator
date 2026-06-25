@@ -32,6 +32,36 @@ npx mira-animator --help
 
 Confirme que o comando `brand` aparece na lista de comandos disponíveis.
 
+### 2.1 Preparando um Workspace de Teste
+
+Os comandos `brand`, `new`, `link` e outros esperam que o Mira esteja "instalado"
+no diretório de trabalho (presença de `mira.config.json`). Para testar localmente
+a versão em desenvolvimento:
+
+```bash
+# Criar uma pasta de teste separada
+mkdir ~/mira-teste && cd ~/mira-teste
+
+# Instalar o Mira no workspace de teste usando o código local (não o npm registry)
+node ~/caminho-para/mira-animator/bin/mira.js install
+
+# Agora testar os comandos usando o código fonte local
+node ~/caminho-para/mira-animator/bin/mira.js brand meu-tema --source=./arquivo.css
+```
+
+**Alternativa com alias (recomendada para sessões de teste prolongadas):**
+
+```bash
+# Criar alias que aponta para o código local
+alias mira-animator='node ~/caminho-para/mira-animator/bin/mira.js'
+
+# A partir daqui, o uso é idêntico à documentação
+mira-animator install
+mira-animator brand meu-tema --source=./arquivo.css
+```
+
+> **Nota:** Substitua `~/caminho-para/mira-animator` pelo caminho real do clone.
+
 ---
 
 ## 3. Executando Testes Automatizados

@@ -3,7 +3,8 @@
   "version": "0.1.20",
   "description": "Agentes e templates para criação de slides animados com D3.js em HTML",
   "bin": {
-    "mira": "bin/mira.js"
+    "mira": "bin/mira.js",
+    "mira-animator": "bin/mira.js"
   },
   "type": "module",
   "scripts": {
