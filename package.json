@@ -6,6 +6,10 @@
     "mira": "bin/mira.js"
   },
   "type": "module",
+  "scripts": {
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
   "keywords": [
     "slides",
     "presentation",
@@ -20,6 +24,7 @@
     "agents/_shared",
     "agents/mira-new",
     "agents/mira-animator",
+    "agents/mira-brand-template",
     "agents/mira-size-animator",
     "agents/mira-animated-metaphor",
     "agents/mira-3d",
@@ -69,6 +74,14 @@
     "chalk": "^5.3.0",
     "inquirer": "^9.2.0",
     "ora": "^8.0.0",
+    "pdf-parse": "^1.1.1",
+    "quantize": "^1.0.2",
+    "sharp": "^0.33.2",
+    "unzipper": "^0.12.3",
     "yoctocolors-cjs": "^2.1.2"
+  },
+  "devDependencies": {
+    "fast-check": "^3.22.0",
+    "vitest": "^2.1.8"
   }
 }

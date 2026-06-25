@@ -8,16 +8,17 @@ import { renderMiraLogo } from '../lib/utils/banner.js';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(readFileSync(join(__dirname, '../package.json'), 'utf8'));
 
-const [,, command, ...args] = process.argv;
+const [, , command, ...args] = process.argv;
 
 const commands = {
-  install:   () => import('../lib/commands/install.js'),
-  link:      () => import('../lib/commands/link.js'),
-  sources:   () => import('../lib/commands/sources.js'),
-  new:       () => import('../lib/commands/new.js'),
-  status:    () => import('../lib/commands/status.js'),
-  update:    () => import('../lib/commands/update.js'),
+  install: () => import('../lib/commands/install.js'),
+  link: () => import('../lib/commands/link.js'),
+  sources: () => import('../lib/commands/sources.js'),
+  new: () => import('../lib/commands/new.js'),
+  status: () => import('../lib/commands/status.js'),
+  update: () => import('../lib/commands/update.js'),
   uninstall: () => import('../lib/commands/uninstall.js'),
+  brand: () => import('../lib/commands/brand.js'),
 };
 
 if (!command || command === '--help' || command === '-h') {
@@ -37,6 +38,8 @@ if (!command || command === '--help' || command === '-h') {
     status               Mostra o estado da instalação e dos decks
     update               Atualiza agents e templates para a última versão
     uninstall            Remove o Mira da pasta atual
+    brand <nome>         Gera tema + template a partir de identidade visual
+                         Opções: --source=<caminho-ou-url>
 
   Documentação: https://github.com/sandeco/mira-animator
   `);
